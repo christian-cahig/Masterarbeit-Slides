@@ -1,0 +1,41 @@
+\subsection{Power flow equations}
+
+\begin{frame}[t]{Power flow equations (PFE)}{%
+    The standard model of steady-state grid physics}
+    \begin{block}{Nodal power balance}{}
+        \vspace{-1em}
+        \begin{IEEEeqnarray*}{rCl}
+            \Diag{\BusVs} \, \Conj{\Ybus\BusVs}
+            & = &
+            \SupCon\left(\SupSs\right) - \DemCon\left(\DemSs\right)
+        \end{IEEEeqnarray*}
+        % 
+        or, equivalently, as a system of \(2\NumBuses\) nonlinear equations,
+        % 
+        {\color{CornellRed}\begin{IEEEeqnarray*}{rCl}
+            \begin{bmatrix*}[r]
+                \Diag{\BusMs\odot\cos\BusAs} & \Diag{\BusMs\odot\sin\BusAs} \\
+                \Diag{\BusMs\odot\sin\BusAs} & -\Diag{\BusMs\odot\cos\BusAs}
+            \end{bmatrix*}
+            \begin{bmatrix*}[r] \Gbus & -\Bbus\, \\ \Bbus & \Gbus\, \end{bmatrix*}
+            \begin{bmatrix*} \BusMs\odot\cos\BusAs\, \\ \BusMs\odot\sin\BusAs\, \end{bmatrix*}
+            & = &
+            \begin{bmatrix*}
+                \SupCon\SupPs - \DemCon\DemPs \\ \SupCon\SupQs - \DemCon\DemQs
+            \end{bmatrix*}
+        \end{IEEEeqnarray*}}
+        \vspace{-1em}
+    \end{block}
+
+    \begin{itemize}
+        \item Staple requirement in power flow analysis (PFA) computations
+
+        \item PFE parameters:
+            \(\Ybus\) as \textcolor<2>{CornellRed}{grid intrinsics},
+            \(\DemDrws\) as \textcolor<2>{CornellRed}{external stimuli}
+
+        \item \(\left(\SupInjs,\BusVolts\right)\) are
+            \textcolor<3>{CornellRed}{power-flow feasible for \(\left(\Ybus,\DemDrws\right)\)}
+            if they satisfy the PFE for \(\left(\Ybus,\DemDrws\right)\)
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,265 @@
+% Colours
+\definecolor{CitationColour}{HTML}{9F1D35}
+\definecolor{InternalLinkColour}{HTML}{01796F}
+\definecolor{URLColour}{HTML}{0D98BA}
+\definecolor{CornellRed}{rgb}{0.7, 0.11, 0.11}
+\definecolor{BrandeisBlue}{rgb}{0.0, 0.44, 1.0}
+\definecolor{LightSalmon}{rgb}{1.0, 0.63, 0.48}
+\definecolor{AtomicTangerine}{rgb}{1.0, 0.6, 0.4}
+
+% Beamer customs
+\usetheme{Boadilla}
+\usefonttheme{professionalfonts}
+\useinnertheme{rounded}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\setbeamertemplate{enumerate items}[square]
+% \setbeamercovered{transparent}
+\usecolortheme{seahorse}
+\makeatletter
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor~(\insertshortinstitute)
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\let\hyperlink\@secondoftwo\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+      \usebeamerfont{date in head/foot}\let\hyperlink\@secondoftwo\insertshortdate
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+\makeatother
+\expandafter\def\expandafter\insertshortdate\expandafter{%
+  \insertshortdate\hfill%
+  \insertframenumber\,/\,\inserttotalframenumber}
+
+% Maths
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools,mismath,derivative,stmaryrd,steinmetz}
+\usepackage{interval}
+\usepackage{ieeetrantools}
+\usepackage{xfrac}
+
+% Fonts
+\usepackage[utf8]{inputenc}
+
+% Tables
+\usepackage{booktabs,tabularx}
+
+% Figures
+\usepackage{caption}
+
+% Hyperlinks
+\hypersetup{
+    pdftitle={\Title: \Subtitle},
+    pdftitle={\CYC},
+    colorlinks=true,
+    hyperfootnotes=true,
+    citecolor=CitationColour,
+    linkcolor=InternalLinkColour,
+    unicode,
+}
+
+% References
+\usepackage[%
+    sorting=none,
+    citestyle=numeric-comp,
+    firstinits=true,
+    maxbibnames=3,
+    maxcitenames=3,
+    backref=true,
+]{biblatex}
+\addbibresource{references.bib}
+
+% Texts
+\usepackage{xspace,pifont,fontawesome5}
+
+% Miscellaneous packages
+\usepackage{ifthen}
+
+% Spacing
+% \setlength\abovecaptionskip{-1pt}
+% \setlength\belowcaptionskip{-1pt}
+
+% Phrases and texts
+\newcommand{\eg}{\textit{e.g.}\xspace}
+\newcommand{\ie}{\textit{i.e.}\xspace}
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\wrt}[1][]{\ifthenelse{\equal{#1}{full}}{with respect to\xspace}{wrt\xspace}}
+\newcommand{\TextPlus}{\raisebox{\dimexpr(\fontcharht\font`X-\height+\depth)/2\relax}{+}}
+\newcommand{\XED}[1][]{%
+\ifthenelse{\equal{#1}{full}}{%
+  extended economic dispatch\xspace}{%
+  ED\TextPlus\xspace}%
+}
+\newcommand{\APFE}[1][]{%
+\ifthenelse{\equal{#1}{full}}{%
+  APF equations\xspace}{%
+  PFE\TextPlus\xspace}%
+}
+\newcommand{\ctpb}{\textit{ceteris paribus}\xspace}
+
+% Tables
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\setlength\heavyrulewidth{0.25ex}
+
+% Constants
+\newcommand{\ImagUnit}{\mathup{j}}
+\newcommand{\EulerConst}{\mathup{e}}
+
+% Operators
+\DeclarePairedDelimiter{\AbsVal}{\lvert}{\rvert}
+\newcommand{\Diag}[1]{\operatorname{Diag}\paren{#1}}
+\newcommand{\Conj}[1]{\operatorname{conj}\paren{#1}}
+\DeclarePairedDelimiter{\Norm}{\lVert}{\rVert}
+\newcommand{\RePart}[1]{\operatorname{Re}\paren{#1}}
+\newcommand{\ImPart}[1]{\operatorname{Im}\paren{#1}}
+\newcommand{\Sum}[1]{\operatorname{sum}\paren{#1}}
+\newcommand{\Clip}[3]{\operatorname{clip}\paren{#2,#1,#3}}
+
+% Vectors and matrices
+\newcommand{\RealMat}[1]{\boldsymbol{\MakeUppercase{#1}}}
+\newcommand{\RealVec}[1]{\boldsymbol{\MakeLowercase{#1}}}
+\newcommand{\Zeros}{\boldsymbol{0}}
+\newcommand{\Ones}{\boldsymbol{1}}
+\newcommand{\ZerosVec}[1][]{\ifthenelse{\equal{#1}{}}{\Zeros}{\Zeros_{#1}}}
+\newcommand{\ZerosMat}[2]{\ifthenelse{\equal{#1}{}}{\Zeros}{\Zeros_{#1,#2}}}
+\newcommand{\OnesVec}[1][]{\ifthenelse{\equal{#1}{}}{\Ones}{\Ones_{#1}}}
+\newcommand{\OnesMat}[2]{\ifthenelse{\equal{#1}{}}{\Ones}{\Ones_{#1,#2}}}
+
+% Sets
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Cplxs}{\mathbb{C}}
+\newcommand{\Buses}{\mathcal{N}}
+\newcommand{\Branches}{\mathcal{E}}
+\newcommand{\GridGraph}{\left(\Buses,\Branches\right)}
+\newcommand{\SupUnits}{\mathcal{U}}
+\newcommand{\SData}{\mathcal{S}}
+\newcommand{\DData}{\mathcal{D}}
+\newcommand{\IData}{\mathcal{I}}
+\newcommand{\PData}{\mathcal{P}}
+
+% Counts
+\newcommand{\NumBuses}{N}
+\newcommand{\NumBranches}{E}
+\newcommand{\NumSupUnits}{U}
+\newcommand{\NumDemUnits}{D}
+
+% Admittance matrix
+\newcommand{\Ybus}{\boldsymbol{Y}}
+\newcommand{\Gbus}{\boldsymbol{G}}
+\newcommand{\Bbus}{\boldsymbol{B}}
+\newcommand{\GBbus}{\Gbus + \ImagUnit\Bbus}
+
+% Supply units
+\newcommand{\SupPs}{\boldsymbol{p}_{\mathsf{u}}}
+\newcommand{\SupQs}{\boldsymbol{q}_{\mathsf{u}}}
+\newcommand{\SupSs}{\SupPs + \ImagUnit\SupQs}
+\newcommand{\SupInjs}{\boldsymbol{c}}
+\newcommand{\SupPQs}{\left(\SupPs,\SupQs\right)}
+\newcommand{\SupCon}{\boldsymbol{C}_{\!\mathsf{u}}}
+\newcommand{\SupP}[1]{p_{\mathsf{u,}#1}}
+\newcommand{\SupQ}[1]{p_{\mathsf{u,}#1}}
+\newcommand{\SnapSupPs}{\widetilde{\boldsymbol{p}}_{\mathsf{u}}}
+\newcommand{\SnapSupQs}{\widetilde{\boldsymbol{q}}_{\mathsf{u}}}
+\newcommand{\SnapSupInjs}{\widetilde{\boldsymbol{c}}}
+\newcommand{\SupPmins}{\underline{\boldsymbol{p}_{\mathsf{u}}}}
+\newcommand{\SupQmins}{\underline{\boldsymbol{q}_{\mathsf{u}}}}
+\newcommand{\SupPQmins}{\left(\SupPmins,\SupQmins\right)}
+\newcommand{\SupPmaxs}{\overline{\boldsymbol{p}_{\mathsf{u}}}}
+\newcommand{\SupQmaxs}{\overline{\boldsymbol{q}_{\mathsf{u}}}}
+\newcommand{\SupPQmaxs}{\left(\SupPmaxs,\SupQmaxs\right)}
+\newcommand{\SupInjmins}{\underline{\SupInjs}}
+\newcommand{\SupInjmaxs}{\overline{\SupInjs}}
+
+% Demand units
+\newcommand{\DemPs}{\boldsymbol{p}_{\mathsf{d}}}
+\newcommand{\DemQs}{\boldsymbol{q}_{\mathsf{d}}}
+\newcommand{\DemSs}{\DemPs + \ImagUnit\DemQs}
+\newcommand{\DemDrws}{\boldsymbol{d}}
+\newcommand{\DemPQs}{\left(\DemPs,\DemQs\right)}
+\newcommand{\DemCon}{\boldsymbol{C}_{\!\mathsf{d}}}
+\newcommand{\SnapDemPs}{\widetilde{\boldsymbol{p}}_{\mathsf{d}}}
+\newcommand{\SnapDemQs}{\widetilde{\boldsymbol{q}}_{\mathsf{d}}}
+\newcommand{\SnapDemDrws}{\widetilde{\boldsymbol{d}}}
+
+% Bus voltages
+\newcommand{\BusMs}{\boldsymbol{\upsilon}}
+\newcommand{\BusAs}{\boldsymbol{\delta}}
+\newcommand{\BusVs}[1][]{%
+\ifthenelse{\equal{#1}{euler}}{%
+  \BusMs\EulerConst^{\ImagUnit\BusAs}}{%
+  \BusMs\phase{\BusAs}}%
+}
+\newcommand{\BusVolts}{\boldsymbol{s}}
+\newcommand{\BusMAs}{\left(\BusMs,\BusAs\right)}
+\newcommand{\BusM}[1]{\upsilon_{#1}}
+\newcommand{\BusA}[1]{\delta_{#1}}
+\newcommand{\SnapBusMs}{\widetilde{\boldsymbol{\upsilon}}}
+\newcommand{\SnapBusAs}{\widetilde{\boldsymbol{\delta}}}
+\newcommand{\SnapBusVolts}{\widetilde{\boldsymbol{s}}}
+\newcommand{\BranchAs}{\boldsymbol{\varphi}}
+
+% Net nodal injections
+\newcommand{\NetPs}{\boldsymbol{p}}
+\newcommand{\NetQs}{\boldsymbol{q}}
+\newcommand{\NetPQs}{\NetPs + \ImagUnit\NetQs}
+\newcommand{\NetInjs}{\boldsymbol{e}}
+
+% Nodal residuals
+\newcommand{\Resids}{\boldsymbol{\phi}}
+
+% ED+
+\newcommand{\XEDObj}[1]{%
+\ifthenelse{\equal{#1}{loss}}{%
+  f_{\mathsf{loss}}}{\ifthenelse{\equal{#1}{reg}}{%
+  f_{\mathsf{reg}}}{%
+  f_{\mathsf{loss}} + f_{\mathsf{reg}}}}%
+}
+\newcommand{\XEDReg}[1]{\ifthenelse{\equal{#1}{p}}{\mu_{\mathsf{p}}}{\mu_{\mathsf{q}}}}
+\newcommand{\XEDRegs}{\left(\XEDReg{p},\XEDReg{q}\right)}
+\newcommand{\XEDShun}[1]{\operatorname{shunt}\paren{#1}}
+\newcommand{\XEDLoss}[1]{\operatorname{loss}\paren{#1}}
+
+% PFE+
+\newcommand{\PFEVars}{\boldsymbol{x}}
+\newcommand{\PFERefBus}{\hat{n}}
+\newcommand{\PFERefA}{\BusA{\mathsf{ref}}}
+\newcommand{\PFEBusAs}{\boldsymbol{\vartheta}}
+\newcommand{\PFESlack}{\kappa}
+\newcommand{\PFESDist}{\boldsymbol{\PFESlack}}
+\newcommand{\PFEResids}{\boldsymbol{\psi}}
+
+% OPF
+\newcommand{\OPFVars}[1][]{%
+\ifthenelse{\equal{#1}{}}{%
+  \left(\SupInjs,\BusVolts\right)}{
+  \left(\SupInjs_{#1},\BusVolts_{#1}\right)}%
+}
+\newcommand{\OPFVar}[2]{%
+\ifthenelse{\equal{#1}{c}}{%
+  \SupInjs_{#2}}{%
+  \BusVolts_{#2}}%
+}
+\newcommand{\Optim}[2][]{%
+\ifthenelse{\equal{#1}{s}}{%
+  #2^{\star}_{\mathsf{s}}}{%
+  #2^{\star}_{\mathsf{w}}}%
+}
+
+% Derivatives
+\newcommand{\Gradient}[2]{\nabla_{#2}#1}
+
+% General APF
+\newcommand{\APFJac}[1][]{\ifthenelse{\equal{#1}{b}}{\boldsymbol{H}}{\boldsymbol{J}}}
+\newcommand{\APFPoint}{\left(\SupInjs,\PFEVars\right)}
+\newcommand{\SnapPoint}{\left(\SnapSupInjs,\SnapBusVolts\right)}
+\newcommand{\APFBGrad}{\boldsymbol{g}}
+
+

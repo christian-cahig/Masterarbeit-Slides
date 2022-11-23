@@ -1,0 +1,33 @@
+\subsection{Problem statement}
+
+\begin{frame}[t]{PFA computation in the online setting}{}
+    \begin{itemize}
+        \item \textcolor<1>{CornellRed}{Snapshot data} of past operating point:
+            \(\SnapPoint\) in response to \(\SnapDemDrws\)
+        \begin{itemize}
+            \item[\ding{43}] Direct or computed from measurements
+        \end{itemize}
+
+        \vspace{0.75em}
+        \item Expected conditions for \textcolor<2-3>{CornellRed}{upcoming dispatch}
+        \begin{itemize}
+            \item \textcolor<2>{CornellRed}{Updated intrinsics \(\Ybus\)}
+                from online parameter estimation \cite{Lateef2020,Vanin+2022v1}
+            \item \textcolor<2>{CornellRed}{Anticipated demand \(\DemDrws\)} from forecast
+            \item \textcolor<2>{CornellRed}{Supply limits \(\SupInjmins\), \(\SupInjmaxs\)}
+                (\eg, schedule, ramp)
+            \item[\ding{43}] \(\DemDrws \neq \SnapDemDrws\), \ie,
+                \textcolor<3>{CornellRed}{\(\SnapPoint\) not on PFM for
+                \(\left(\Ybus,\DemDrws\right)\)}
+        \end{itemize}
+
+        \vspace{0.75em}
+        \item \textcolor<4>{CornellRed}{Invariant} roster of supply \& demand units
+            (\ie, fixed \(\SupCon\) and \(\DemCon\))
+    \end{itemize}
+
+    \begin{alertblock}<5>{}
+        Using the snapshot point \(\SnapPoint\), how do we find a point \(\APFPoint\)
+        on the PFM for \(\left(\Ybus,\DemDrws\right)\)?
+    \end{alertblock}
+\end{frame}

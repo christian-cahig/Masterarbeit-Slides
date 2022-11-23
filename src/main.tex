@@ -1,0 +1,51 @@
+% !TeX root = main.tex
+\documentclass[
+    11pt,
+    usenames, dvipsnames,
+    usepdftitle=false,
+    aspectratio=169,
+]{beamer}
+\graphicspath{{graphics/}{./}}
+\input{metadata}
+\input{customs}
+
+% Document proper
+\begin{document}
+
+\section{Front matter}
+\begin{frame}[t]\titlepage\end{frame}   % Title slide
+
+\section{Preliminaries}
+\input{prelims/system-model}
+\input{prelims/power-flow-eqns}
+\input{prelims/power-flow-mani}
+\input{prelims/mani-view-scapf}
+
+\section{Overview of the study}
+\input{overview/problem}
+
+\section{Formulation}
+\input{formulation/pillars}
+\input{formulation/ed-plus}
+\input{formulation/pfe-plus}
+
+\section{Computation}
+\input{computation/solvers-algos}
+\input{computation/time-evals}
+\input{computation/quadrimodal-effect}
+
+\section{Applications}
+\input{applications/warm-start}
+\input{applications/differentiable-pfeplus}
+
+\section{Conclusion}
+\input{conclusion/summary}
+
+\begin{frame} \titlepage \end{frame}
+
+\section{References}
+\begin{frame}[t,allowframebreaks]{References}{}
+    \printbibliography[heading=none]
+\end{frame}
+
+\end{document}

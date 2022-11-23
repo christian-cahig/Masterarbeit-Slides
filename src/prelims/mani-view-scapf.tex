@@ -1,0 +1,54 @@
+\subsection{Finding points on the power flow manifold}
+
+\begin{frame}[t]{Finding a point on the PFM}{}
+    \begin{itemize}
+        \item <1-> \textcolor<1>{CornellRed}{Standard power flow} (SPF)
+            as completing a point on PFM
+        \begin{itemize}
+            \item \textcolor<1>{CornellRed}{Fix some coordinates} with slack-PV-PQ model (\S2.4.1)
+            \begin{itemize}
+                \item Find \(k\in\Buses\) with supply unit, set \(\BusA{k}\) as reference
+                \item Assume \(\BusM{m}\) and \(\SupP{n}\) for
+                    all \(m\in\Buses\) with supply units,
+                    and all unit \(n\) at \(m \neq k\)
+            \end{itemize}
+
+            \item \textcolor<1>{CornellRed}{Complete the other coordinates} from PFE
+        \end{itemize}
+
+        \vspace{0.5em}
+        \item <2-> \textcolor<2-3>{CornellRed}{Continuation power flow} (CPF)
+            as finding points through PFMs
+        \begin{itemize}
+            \item \textcolor<2>{CornellRed}{Estimating stability limits}:
+                \(\Resids\paren{\Ybus,\DemDrws_{i}} \, = \ZerosVec[2\NumBuses]\)
+                with \(\DemDrws_{i} = \lambda_{i}\DemDrws_{\mathsf{base}}\)
+                \cite{AjjarapuChristy1992,CanizaresAlvarado1993,Chiang+1995,GomezQuiles+2016,%
+                Liu+2005,Avalos+2009}
+
+            \item \textcolor<2>{CornellRed}{Branch-outage contingency}:
+                \(\Resids\paren{\Ybus_{i},\DemDrws} \, = \ZerosVec[2\NumBuses]\)
+                by
+                \cite{FlueckDondeti2000,FlueckQiu2004,Matarucco+2004,MataruccoNetoAmancio2014}
+        \end{itemize}
+
+        \vspace{0.5em}
+        \item <3-> \textcolor<3>{CornellRed}{Optimal power flow} (OPF)
+            as finding the best point on PFM
+        \begin{itemize}
+            \item Best point minimizes \textcolor<3>{CornellRed}{operating cost \(g\!\OPFVars\)}
+                subject to
+            \begin{itemize}
+                \item Supply capacity:
+                    \(\underline{\SupInjs} \leq \SupInjs \leq \overline{\SupInjs}\)
+                \item Allowable state:
+                    \(\RealMat{A}\BusVolts \leq \RealVec{b}\)
+            \end{itemize}
+
+            \item \textcolor<3>{CornellRed}{Nonconvex} (due to PFE)
+                and \textcolor<3>{CornellRed}{NP-hard}
+                \cite{LavaeiLow2012,Lehmann+2016,BienstockVerma2019}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+

@@ -1,0 +1,30 @@
+\subsection{Power flow manifold}
+
+\begin{frame}[t]{Power flow manifold (PFM)}{%
+    A geometric intuition for the PFE}
+
+    \begin{block}{PFE as a manifold in \(\left(\SupInjs,\BusVolts\right)\)--space}
+        Expressed as
+        {\color{CornellRed}
+        \(\Resids\paren{\SupInjs,\BusVolts;\Ybus,\DemDrws} \ = \ZerosVec[2\NumBuses]\)},
+        the PFE describe a manifold of all points \(\left(\SupInjs,\BusVolts\right)\)
+        that are power-flow feasible for \(\left(\Ybus,\DemDrws\right)\).
+    \end{block}
+
+    \begin{itemize}
+        \item PFE parameters \(\left(\Ybus,\DemDrws\right)\)
+            dictate the \textcolor<2>{CornellRed}{``shape'' of PFM}
+
+        \item Power-flow feasible \(\left(\SupInjs,\BusVolts\right)\)
+            for \(\left(\Ybus,\DemDrws\right)\)
+            \(\Longrightarrow\)
+            \textcolor<3>{CornellRed}{\(\left(\SupInjs,\BusVolts\right)\)
+            is on PFM for \(\left(\Ybus,\DemDrws\right)\)}
+
+        \item Computation over PFE for \(\left(\Ybus,\DemDrws\right)\)
+            \(\Longrightarrow\)
+            \textcolor<3>{CornellRed}{finding a point on PFM for \(\left(\Ybus,\DemDrws\right)\)}
+    \end{itemize}
+
+    \vspace{5em}
+\end{frame}

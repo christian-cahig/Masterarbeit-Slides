@@ -1,0 +1,48 @@
+\subsection{Foundational notions}
+
+\begin{frame}[t]{Pillars of anticipatory power flow (APF)}{}
+    \begin{enumerate}
+    \item <1->
+    \(\SupInjs\) as \textcolor<1>{CornellRed}{control},
+    \(\BusVolts\) as \textcolor<1>{CornellRed}{state},
+    and
+    \textcolor<1>{CornellRed}{\(\BusVolts\) as an implicit function of \(\SupInjs\)} via PFE
+    \begin{itemize}
+        \item OPF notion from '60s \cite[\S 2.4]{FrankRebennack2016};
+            used in recent works on online OPF \cite{GanLow2016,Tang+2017}
+        \item[\faLightbulb] Compute \(\SupInjs\) voltage-free,
+            then solve for \(\BusVolts\) from PFE
+    \end{itemize}
+
+    \vspace{1em}
+    \item <2->
+    To \textcolor<2>{CornellRed}{avoid rotational degeneracy},
+    pick \textcolor<2>{CornellRed}{any} bus \(\PFERefBus\) as reference
+    and \(\BusA{\PFERefBus} \gets \PFERefA\)
+    \begin{itemize}
+        \item PFE are \textcolor<2>{CornellRed}{sinusoids of phase angle differences},
+            not of phase angles
+        \item Slack-PV-PQ is \textcolor<2>{CornellRed}{mathematically unnecessary}
+            \cite[\S 2.2.1]{MolzahnHiskens2019}
+        \item[\faLightbulb] Non-reference voltage phase angles:
+            \(\PFEBusAs \in \Reals^{\NumBuses-1}\)
+    \end{itemize}
+
+    \vspace{1em}
+    \item <3>
+    To make \textcolor<3>{CornellRed}{solving PFE well-determined},
+    add a \textcolor<3>{CornellRed}{distributed slack \(\PFESlack \in \Reals\)}
+    \begin{itemize}
+        \item Based on SPF notion \textcolor<3>{CornellRed}{distributed slack bus},
+            dating back to '90s \cite{Meisel1993}
+        \item \(\PFESlack\) shared via
+            \textcolor<3>{CornellRed}{slack distribution ratios \(\PFESDist\)}
+            based on supply limits (\S 3.3)
+        \item[\faLightbulb] With
+            \(\PFEVars\coloneqq\begin{bmatrix*}\BusMs;\PFEBusAs;\PFESlack\end{bmatrix*}\)
+            as state variables, restate PFE as
+            \(\Resids\paren{\PFEVars;\Ybus,\DemDrws,\SupInjs,\BusA{\PFERefBus}}
+            \,=\ZerosVec[2\NumBuses]\)
+    \end{itemize}
+    \end{enumerate}
+\end{frame}

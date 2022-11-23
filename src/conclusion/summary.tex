@@ -1,0 +1,39 @@
+\begin{frame}[t]{APF in summary}{}
+    \begin{itemize}
+        \item \textcolor<1>{CornellRed}{Formulation}:
+            finding power-flow feasible \(\left(\SupInjs,\BusVolts\right)\)
+            for anticipated grid conditions \(\left(\Ybus,\DemDrws\right)\),
+            using preceding snapshot values \(\SnapPoint\)
+        \begin{itemize}
+            \item Anticipate \(\SupInjs\) by solving a convex program
+                \textcolor<1>{CornellRed}{\XED[full]} (\XED)
+            \item Compute corresponding \(\BusVolts\) by solving
+                \textcolor<1>{CornellRed}{\APFE[full]} (\APFE)
+        \end{itemize}
+
+        \vspace{0.5em}
+        \item \textcolor<2>{CornellRed}{Computation}:
+            amply handled by existing and readily available tools
+        \begin{itemize}
+            \item SeDuMi and SDPT3 for \XED;
+                Levenberg-Marquardt and Powell hybrid for \APFE
+            \item \textcolor<2>{CornellRed}{Sub-second run times}
+                on 3374-bus, 4161-branch, 596-generator portion of Polish grid
+            \item \textcolor<2>{CornellRed}{Quadrimodal effect} of \XED
+                \(\Longrightarrow\)
+                \textcolor<2>{CornellRed}{big-\(\mu\) trick} for easily finding four APF points
+        \end{itemize}
+
+        \vspace{0.5em}
+        \item \textcolor<3>{CornellRed}{Applications}
+        \begin{enumerate}
+            \item Warm-starting OPF solvers
+                \(\Longrightarrow\)
+                \textcolor<3>{CornellRed}{a crude method for finding multiple OPF solutions}
+
+            \item Differentiating through \APFE
+                \(\Longrightarrow\)
+                \textcolor<3>{CornellRed}{power flow equations as a layer in amortized OPF}
+        \end{enumerate}
+    \end{itemize}
+\end{frame}

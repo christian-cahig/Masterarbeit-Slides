@@ -1,0 +1,181 @@
+\subsection{Warm-starting an OPF solver}
+
+\begin{frame}[t]{APF for OPF: Providing solvers with warm-start points}{}
+    OPF solvers are iterative:
+    \textcolor<1>{CornellRed}{\(\OPFVars[k+1] \gets \operatorname{update}\!\OPFVars[k]\)}
+    \begin{itemize}
+        \item User-specified \textcolor<1>{CornellRed}{starting point \(\OPFVars[0]\)}
+        \item \textcolor<1>{CornellRed}{Interior-point methods} are SOTA \cite{Capitanescu+2007},
+            especially in large scale \cite{CapitanescuWehenkel2013,Kardos+2020v4,Kardos+2022}
+    \end{itemize}
+
+    \onslide*<2->{
+    \vspace{1em}
+    \textcolor<2>{CornellRed}{Snapshot-starting} a solver
+    \begin{itemize}
+        \item \(\OPFVars[0] \gets \SnapPoint\)
+        \item[\ding{43}] Search \textcolor<2>{CornellRed}{does not start on PFM}
+    \end{itemize}
+    }
+
+    \onslide*<3->{
+    \vspace{1em}
+    \textcolor<3>{CornellRed}{Warm-starting} a solver with APF point \(\APFPoint\)
+    \begin{itemize}
+        \item \(\OPFVar{c}{0} \gets \left(\SupPs + \PFESlack\PFESDist, \SupQs\right)\)
+        \item \(\OPFVar{s}{0} \gets \BusMAs\)
+        \item[\ding{43}] Search \textcolor<3>{CornellRed}{starts on PFM}
+    \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}[t]{APF for OPF: Providing solvers with warm-start points}{}
+    \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+    \onslide*<1->{
+    Solve instances on \texttt{POL3375} via MIPS 1.4 \cite{MIPSv1.4}
+    \begin{itemize}
+        \item 408 APF instances
+
+        \item Get snapshot- \& warm-started optima
+        \begin{itemize}
+            \item \(\Optim[s]{\SupInjs}\), \(\Optim[s]{\BusMs}\), \(\Optim[s]{\BranchAs}\), \(\Optim[s]{g}\)
+            \item \(\Optim[w]{\SupInjs}\), \(\Optim[w]{\BusMs}\), \(\Optim[w]{\BranchAs}\), \(\Optim[w]{g}\)
+        \end{itemize}
+
+        \item Compare solutions in terms of
+        \begin{itemize}
+            \item \(\epsilon_{\mathsf{c}} \coloneqq \Norm*{\begin{matrix*}
+                \Optim[s]{\SupInjs}-\Optim[w]{\SupInjs}\end{matrix*}}_{\infty}\)
+                (in 100-MVA units)
+            \item \(\epsilon_{\mathsf{v}} \coloneqq \Norm*{\begin{matrix*}
+                \Optim[s]{\BusMs}-\Optim[w]{\BusMs}\end{matrix*}}_{\infty}\)
+                (in 400-kV units)
+            \item \(\epsilon_{\mathsf{a}} \coloneqq \Norm*{\begin{matrix*}
+                \Optim[s]{\BranchAs}-\Optim[w]{\BranchAs}\end{matrix*}}_{\infty}\)
+                (in radians)
+            \item \(\epsilon_{\mathsf{g}} \coloneqq \Optim[s]{g} - \Optim[w]{g}\)
+                (in USD)
+        \end{itemize}
+
+        \item[\ding{43}] <7->
+            \textcolor<7->{CornellRed}{
+            \(\left(\Optim[w]{g},\Optim[w]{\BusMs},\Optim[w]{\BranchAs}\right)
+            \approxeq
+            \left(\Optim[s]{g},\Optim[s]{\BusMs},\Optim[s]{\BranchAs}\right)\)}
+            attained from \textcolor<7->{CornellRed}{
+            distinct \(\Optim[w]{\SupInjs}\) and \(\Optim[s]{\SupInjs}\)} 
+    \end{itemize}
+    }
+    \end{column}
+
+    \begin{column}{0.5\textwidth}
+    \onslide*<2-7>{
+    \hspace*{\fill}{\small At \(\XEDRegs=\left(0,0\right)\)}
+    \begin{table}[t!] \vspace{-0.7em} \small
+    \begin{tabularx}{\textwidth}{@{} cCC @{}}
+    \toprule
+    Metric & Minimum & Maximum
+    \\ \midrule
+    \(\epsilon_{\mathsf{g}}\)
+    & \textcolor<3>{BrandeisBlue}{\(-1.7847\times10^{-2}\)}
+    & \textcolor<3>{BrandeisBlue}{\(1.90488\times10^{-2}\)}
+    \\
+    \(\epsilon_{\mathsf{v}}\)
+    & \textcolor<4>{LightSalmon}{\(4.79369\times10^{-9}\)}
+    & \textcolor<4>{LightSalmon}{\(6.89567\times10^{-5}\)}
+    \\
+    \(\epsilon_{\mathsf{a}}\)
+    & \textcolor<4>{LightSalmon}{\(6.47442\times10^{-10}\)}
+    & \textcolor<4>{LightSalmon}{\(5.92979\times10^{-6}\)}
+    \\
+    \(\epsilon_{\mathsf{c}}\)
+    & \textcolor<5-7>{CornellRed}{\(6.05418\times10^{-4}\)}
+    & \textcolor<5-7>{CornellRed}{\(8.78352\times10^{-1}\)}
+    \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+    }
+
+    \onslide*<6-7>{
+    \hspace*{\fill}{\small At \(\XEDRegs=\left(1,1\right)\)}
+    \begin{table}[t!] \vspace{-0.7em} \small
+    \begin{tabularx}{\textwidth}{@{} cCC @{}}
+    \toprule
+    Metric & Minimum & Maximum
+    \\ \midrule
+    \(\epsilon_{\mathsf{g}}\)
+    & \(-1.21094\times10^{-2}\)
+    & \(2.14678\times10^{-2}\)
+    \\
+    \(\epsilon_{\mathsf{v}}\)
+    & \(1.82573\times10^{-9}\)
+    & \(2.4873\times10^{-5}\)
+    \\
+    \(\epsilon_{\mathsf{a}}\)
+    & \(2.88286\times10^{-10}\)
+    & \(3.47572\times10^{-6}\)
+    \\
+    \(\epsilon_{\mathsf{c}}\)
+    & \textcolor<6-7>{CornellRed}{\(1.23703\times10^{-4}\)}
+    & \textcolor<6-7>{CornellRed}{\(2.88003\times10^{-1}\)}
+    \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+    }
+
+    \onslide*<8>{
+    \hspace*{\fill}{\small At \(\XEDRegs=\left(1,0\right)\)}
+    \begin{table}[t!] \vspace{-0.7em} \small
+    \begin{tabularx}{\textwidth}{@{} cCC @{}}
+    \toprule
+    Metric & Minimum & Maximum
+    \\ \midrule
+    \(\epsilon_{\mathsf{g}}\)
+    & \textcolor<8>{BrandeisBlue}{\(-2.44578\times10^{-2}\)}
+    & \textcolor<8>{BrandeisBlue}{\(2.24346\times10^{-2}\)}
+    \\
+    \(\epsilon_{\mathsf{v}}\)
+    & \textcolor<8>{LightSalmon}{\(7.57086\times10^{-10}\)}
+    & \textcolor<8>{LightSalmon}{\(6.40276\times10^{-5}\)}
+    \\
+    \(\epsilon_{\mathsf{a}}\)
+    & \textcolor<8>{LightSalmon}{\(1.99231\times10^{-10}\)}
+    & \textcolor<8>{LightSalmon}{\(4.99960\times10^{-6}\)}
+    \\
+    \(\epsilon_{\mathsf{c}}\)
+    & \textcolor<8>{CornellRed}{\(6.91804\times10^{-4}\)}
+    & \textcolor<8>{CornellRed}{\(1.16527\times10^{0}\)}
+    \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+    }
+    \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[t]{APF for OPF: Providing solvers with warm-start points}{}
+    \begin{block}<1->{It's just the nonconvexity of OPF}
+        The APF point
+        \textcolor<1->{CornellRed}{can be sufficiently far} from the snapshot point
+        that, for \textcolor<1->{CornellRed}{the same algorithm},
+        these starting points lead to \textcolor<1->{CornellRed}{distinct optima}.
+    \end{block}
+
+    \begin{corollary}<2->{}
+        In its current form, APF is
+        \textcolor<2->{CornellRed}{a crude method for finding multiple OPF solutions}.
+    \end{corollary}
+
+    \begin{alertblock}<3->{Open problems}
+    \begin{enumerate}
+        \item Given a solver, a snapshot point \(S\), and a APF point \(A\),
+            how can we tell that starting the solver at \(S\) and at \(A\)
+            will or will not give us distinct optima?
+        \item How to make APF a more disciplined method of finding multiple OPF solutions?
+    \end{enumerate}
+    \end{alertblock}
+\end{frame}

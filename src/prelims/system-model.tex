@@ -1,0 +1,48 @@
+\subsection{System model}
+
+\begin{frame}[t]{The steady-state grid as a weighted graph \(\GridGraph\)}{}
+    \onslide*<1-3>{
+    \textcolor<1>{CornellRed}{\(\NumBuses\) buses} as nodes,
+    \textcolor<1>{CornellRed}{\(\NumBranches\) branches} as edges,
+    \begin{itemize}
+        \item \(\Buses\): key locations (\eg, substation)
+        \item \(\Branches\): bus-to-bus interfaces (\eg, lines, cables, transformers)
+    \end{itemize}
+
+    \vspace{1em}
+    \textcolor<2>{CornellRed}{Branch admittances} act as edge weights
+    \begin{itemize}
+        \item How well a branch admits power flow
+    \end{itemize}
+
+    \vspace{1em}
+    \textcolor<3>{CornellRed}{Bus admittance matrix \(\Ybus=\GBbus\)} act as graph Laplacian
+    \begin{itemize}
+        \item Sparsity reflects grid topology
+        \item Elements computed from admittances
+        \item[\ding{43}] \(\Ybus\) encodes \textcolor<3>{CornellRed}{grid intrinsics}
+    \end{itemize}
+    }
+
+    \onslide*<4->{
+    Buses are entry and exit points for power
+    \begin{itemize}
+        \item Demand units \textcolor<4>{CornellRed}{draw \(\DemSs \in \Cplxs^{\NumSupUnits}\)}
+        \item Supply units \textcolor<4>{CornellRed}{inject \(\SupSs \in \Cplxs^{\NumDemUnits}\)}
+        \item \(\SupCon\), \(\DemCon\): connection matrices
+        \item \(\DemDrws \coloneqq \DemPQs\) and \(\SupInjs \coloneqq \SupPQs\)
+        \item[\ding{43}] Net nodal injections:
+            \textcolor<4>{CornellRed}{\(\SupCon\left(\SupSs\right) - \DemCon\left(\DemSs\right)\)}
+    \end{itemize}
+
+    \vspace{1em}
+    Bus voltages \textcolor<5>{CornellRed}{\(\BusVs\equiv\BusVs[euler]\)}
+    are \textcolor<5>{CornellRed}{state variables}
+    \begin{itemize}
+        \item For a grid with \(\Ybus\), its state is computable given
+            \(\BusVolts \coloneqq \BusMAs\)
+        \item[\ding{43}] Net nodal injections:
+            \textcolor<5>{CornellRed}{\(\Diag{\BusVs} \, \Conj{\Ybus\BusVs}\)}
+    \end{itemize}
+    }
+\end{frame}

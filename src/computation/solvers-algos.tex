@@ -1,0 +1,43 @@
+\subsection{Solvers and algorithms}
+
+\begin{frame}[t]{Some fast solvers and algorithms for APF}{}
+    \begin{columns}[T]
+    \begin{column}{0.4\textwidth}
+    For solving \XED
+    \begin{itemize}
+        \item \textcolor<1>{CornellRed}{SeDuMi} 1.3.4
+            \cite{SeDuMi_v1.3.4,YeToddMizuno1994,Sturm1999}
+        \item \textcolor<1>{CornellRed}{SDPT3} 4.0
+            \cite{SDPT3_v4.0,Toh+1999,Tutuncu+2003}
+        \item[\ding{43}] Free and open-source
+        \item[\ding{43}] Shipped as part of CVX 2.2
+    \end{itemize}
+    \end{column}
+
+    \pause
+    \begin{column}{0.6\textwidth}
+    For solving \APFE
+    \begin{itemize}
+        \item \textcolor<2>{CornellRed}{Powell hybrid method}
+            \cite{Powell1968,Powell1970a,Powell1970b}
+            % as used in MINPACK-1 \cite[\S 1.1, \S 2.2]{More+1980}
+        \item \textcolor<2>{CornellRed}{Levenberg-Marquardt algorithm}
+            \cite{Levenberg1944,Marquardt1963}
+            % as described by \citeauthor{More1978} \cite{More1978}
+        \item[\ding{43}] Quadratic local convergence
+            \cite[\S 10.3, 11.2]{NocedalWright2006}
+        \item[\ding{43}] Ready-to-use in modern solvers
+    \end{itemize}
+    \end{column}
+    \end{columns}
+
+    \pause
+    \vspace{2em}
+    \begin{center}
+        \textcolor<3>{CornellRed}{APFLib}:
+        a MATLAB library built on CVX and as an extension for MATPOWER
+
+        {\href{https://github.com/christian-cahig/Masterarbeit-DemoApps}{%
+        \faGithub \ christian-cahig/Masterarbeit-DemoApps}}
+    \end{center}
+\end{frame}

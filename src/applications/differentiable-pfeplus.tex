@@ -1,0 +1,195 @@
+\subsection{Differentiating through the APF equations}
+
+\begin{frame}[t]{APF for amortized OPF: Differentiating through \APFE}{}
+    \onslide*<1->{
+    Neural nets to learn solution maps of OPF instances
+    with fixed \(\Ybus\) but varying \(\DemDrws\)
+    \begin{itemize}
+        \item <1-> Design challenge: \textcolor<1>{CornellRed}{differentiably incorporate PFE}
+
+        \item <2-> \textcolor<2>{CornellRed}{OPF-DNN}:
+            violation-based Lagrangian relaxation \cite{Chatzos+2020v1}
+        \begin{itemize}
+            \item \(\DemDrws
+                \xrightarrow{\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}}
+                \SupInjs,\BusVolts \xrightarrow{\text{computations}}
+                \ell = \cdots + \lambda
+                \Norm*{\begin{matrix*}\Resids\paren{\SupInjs,\BusVolts}\end{matrix*}}_{1}\)
+            \item[\faExclamation] Only encourages PFE compliance
+        \end{itemize}
+
+        \item <3-> \textcolor<3>{CornellRed}{DeepOPF}:
+            SPF + zeroth-order gradient estimation \cite{DeepOPF-FOACOPFv6}
+        \begin{itemize}
+            \item \(\DemDrws
+                \xrightarrow{\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}}
+                \hat{\SupPs},\hat{\BusMs} \xrightarrow{\text{SPF}}
+                \SupInjs,\BusVolts \xrightarrow{\text{computations}} \ell\)
+            \item[\faExclamation] Inexact gradient could hurt training
+        \end{itemize}
+
+        \item <4-> \textcolor<4>{CornellRed}{DC3}:
+            SPF + penalty + differentiating through SPF \cite{DC3}
+        \begin{itemize}
+            \item \(\DemDrws
+                \xrightarrow{\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}}
+                \hat{\SupPs},\hat{\BusMs} \xrightarrow{\text{SPF}}
+                \SupInjs,\BusVolts \xrightarrow{\text{computations}}
+                \ell = \cdots + \lambda
+                \Norm*{\begin{matrix*}\Resids\paren{\SupInjs,\BusVolts}\end{matrix*}}_{2}^{2}
+                \)
+            \item[\faExclamation] Differentiating through SPF is (very) complicated
+        \end{itemize}
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}[t]{APF for amortized OPF: Differentiating through \APFE}{}
+    \begin{exampleblock}<1->{Long-term mission}
+        Treating \(\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}\)
+        as anticipating \(\SupInjs\),
+        we have
+        \(\textcolor{CornellRed}{\DemDrws
+        \xrightarrow{\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}}
+        \SupInjs \xrightarrow{\text{solve \APFE}} \PFEVars \xrightarrow{\text{computations}}
+        \ell\paren{\SupInjs,\PFEVars\paren{\SupInjs}}}\)
+        for any appropriate loss \(\ell\).
+        Backpropagation simply follows
+        \textcolor{CornellRed}{
+        \(\textcolor{CornellRed}{\odif{\ell} =
+        \bigl(\partial_{\SupInjs}\ell + \partial_{\PFEVars}\ell\, \partial_{\SupInjs}\PFEVars\bigr)
+        \partial_{\boldsymbol{\theta}}\SupInjs \odif{\boldsymbol{\theta}}}\)}.
+    \end{exampleblock}
+
+    \begin{overlayarea}{\textwidth}{\textheight}
+    \begin{onlyenv}<2-3>
+    \begin{itemize}
+        \item <2-3> \(\partial_{\boldsymbol{\theta}}\SupInjs\),
+            \(\partial_{\SupInjs}\ell\paren{\cdot}\),
+            and \(\partial_{\PFEVars}\ell\paren{\cdot}\)
+            are \textcolor<2>{CornellRed}{trivial for modern autodiff engines}
+
+        \item[\ding{43}] <3> Contribution: How to differentiate through \APFE
+        \begin{itemize}
+            \item <3> Computing the
+                \textcolor<3>{CornellRed}{backward APF Jacobian
+                \(\APFJac[b]\paren{\cdot} \,\coloneqq \partial_{\SupInjs}\PFEVars\paren{\cdot}\)}
+            \item <3> Computing the
+                \textcolor<3>{CornellRed}{backward APF gradient
+                \(\APFBGrad\paren{\cdot}\)},
+                \ie,
+                \(\APFBGrad^{\!\mathsf{T}}\paren{\cdot} \,\equiv
+                \partial_{\PFEVars}\ell\paren{\cdot}\,\APFJac[b]\paren{\cdot}\)
+        \end{itemize}
+    \end{itemize}
+    \end{onlyenv}
+
+    \begin{block}<4->{Computing the backward APF Jacobian (\S 4.4.1)}
+        Applying the implicit function theorem at an APF point \(\APFPoint\),
+        the \textcolor{CornellRed}{backward APF Jacobian} is the solution to
+        \textcolor{CornellRed}{
+        \(\APFJac\paren{\PFEVars}\,\APFJac[b]\paren{\PFEVars} \,= \Diag{\SupCon,\SupCon}\)}.
+    \end{block}
+
+    \begin{block}<5->{Computing the backward APF gradient (\S 4.4.2)}
+        \textcolor{CornellRed}{Jacobian-vector product} (JVP):
+        solve for \(\APFJac[b]\),
+        then \(\APFBGrad = \APFJac[b]^{\mathsf{T}} \, \nabla_{\!\PFEVars}\ell\)
+
+        \textcolor{CornellRed}{Vector-Jacobian product} (VJP):
+        solve for \(\RealVec{u}\) from
+        \(\APFJac^{\mathsf{T}} \RealVec{u} = \nabla_{\!\PFEVars}\ell\),
+        then \(\APFBGrad = \Diag{\SupCon^{\mathsf{T}},\SupCon^{\mathsf{T}}} \, \RealVec{u}\)
+    \end{block}
+    \end{overlayarea}
+\end{frame}
+
+\begin{frame}[t]{APF for amortized OPF: Differentiating through \APFE}{}
+    \begin{columns}[T]
+    \begin{column}{0.4\textwidth}
+    Prefer VJP to JVP
+    \begin{itemize}
+        \item <5-> No need to form \(\APFJac[b]\),
+            which is \textcolor<5>{CornellRed}{\(2\NumBuses \times 2\NumSupUnits\) and dense}
+
+        \item <6-> With mild assumptions (\S A.3.2),
+        \begin{itemize}
+            \item <6-> JVP is \textcolor<6>{CornellRed}{
+                \(\bigO\paren{\tfrac{32}{2}\NumSupUnits\NumBuses^{3}}\) flops}
+            \item <6-> VJP is \textcolor<6>{CornellRed}{
+                \(\bigO\paren{\tfrac{16}{3}\NumBuses^{3}}\) flops}
+        \end{itemize}
+    \end{itemize}
+    \end{column}
+
+    \begin{column}{0.6\textwidth}
+    \onslide*<2->{
+    {\small
+    Gradients are of \(\ell\) in Equation (4.24).
+    Wall times are averaged over 100 runs,
+    based on Intel Core i7-10750H w/ 16GB RAM.}
+    \begin{table}[t!] \vspace{-0.7em} \small
+    \begin{tabularx}{\textwidth}{@{} cCCC @{}}
+    \toprule
+    System
+    & \(\Norm*{\begin{matrix*}
+        \APFBGrad_{\mathsf{jvp}}-\APFBGrad_{\mathsf{vjp}}\end{matrix*}}_{\infty}\)
+    & JVP time [s]
+    & VJP time [s]
+    \\ \midrule
+    \texttt{ACT500}
+    & \textcolor<3>{BrandeisBlue}{\(3.9968\times10^{-14}\)}
+    & \textcolor<4>{AtomicTangerine}{\(3.3319\times10^{-2}\)}
+    & \textcolor<4>{CornellRed}{\(4.4259\times10^{-3}\)}
+    \\
+    \texttt{RTE1888}
+    & \textcolor<3>{BrandeisBlue}{\(7.3630\times10^{-13}\)}
+    & \textcolor<4>{AtomicTangerine}{\(5.4983\times10^{-1}\)}
+    & \textcolor<4>{CornellRed}{\(1.8315\times10^{-2}\)}
+    \\
+    \texttt{POL3375}
+    & \textcolor<3>{BrandeisBlue}{\(5.5111\times10^{-12}\)}
+    & \textcolor<4>{AtomicTangerine}{\(2.4872\)}
+    & \textcolor<4>{CornellRed}{\(3.4472\times10^{-2}\)}
+    \\
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+    }
+    \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[t]{APF for amortized OPF: Differentiating through \APFE}{}
+    \begin{exampleblock}{Long-term mission}
+        Treating \(\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}\)
+        as anticipating \(\SupInjs\),
+        we have
+        \(\textcolor{CornellRed}{\DemDrws
+        \xrightarrow{\operatorname{Net}_{\boldsymbol{\theta}}\paren{\cdot}}
+        \SupInjs \xrightarrow{\text{solve \APFE}} \PFEVars \xrightarrow{\text{computations}}
+        \ell\paren{\SupInjs,\PFEVars\paren{\SupInjs}}}\)
+        for any appropriate loss \(\ell\).
+        Backpropagation simply follows
+        \textcolor{CornellRed}{
+        \(\textcolor{CornellRed}{\odif{\ell} =
+        \bigl(\partial_{\SupInjs}\ell + \partial_{\PFEVars}\ell\, \partial_{\SupInjs}\PFEVars\bigr)
+        \partial_{\boldsymbol{\theta}}\SupInjs \odif{\boldsymbol{\theta}}}\)}.
+    \end{exampleblock}
+
+    \begin{alertblock}{Open problems and working ideas}
+        \begin{enumerate}
+            \item How to solve a batch of \APFE instances with GPU acceleration?
+            \begin{itemize}
+                \item[\faLightbulb] Cast as nonlinear least-squares,
+                    then use JAXOpt \cite{Blondel+2022v5}
+            \end{itemize}
+
+            \item How to quantify model uncertainty?
+            \begin{itemize}
+                \item[\faLightbulb] Extend conformal prediction \cite{GenIntroConfPred_v5}
+                    into a multivariate regression case
+            \end{itemize}
+        \end{enumerate}
+        \end{alertblock}
+\end{frame}

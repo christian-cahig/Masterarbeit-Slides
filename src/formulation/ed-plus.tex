@@ -1,0 +1,57 @@
+\subsection{Solving for the anticipated supply injections}
+
+\begin{frame}[t]{Solving for the anticipated supply injections}{}
+    \begin{block}{Extended economic dispatch (\XED)}
+    \vspace{-1em}
+    \begin{align*}
+        \operatornamewithlimits{min}_{\RealVec{p},\,\RealVec{q}}
+        \quad &
+        \underbrace{
+            \Norm*{\begin{matrix*}\RealVec{p}\end{matrix*}}_{2}
+            +
+            \Norm*{\begin{matrix*}\RealVec{q}\end{matrix*}}_{2}
+        }_{\XEDObj{loss}}
+        \ + \
+        \underbrace{
+            \XEDReg{p} \Norm*{\begin{matrix*}\RealVec{p} - \SnapSupPs\end{matrix*}}_{2}
+            +
+            \XEDReg{q} \Norm*{\begin{matrix*}\RealVec{q} - \SnapSupQs\end{matrix*}}_{2}
+            }_{\XEDObj{reg}} \\
+        \operatorname{s.t.} \quad &
+        \OnesVec^{\!\mathsf{T}} \RealVec{p} \,= p_{\mathsf{need}}, \quad
+        \OnesVec^{\!\mathsf{T}} \RealVec{q} \,= q_{\mathsf{need}}, \quad
+        \SupPmins \leq \RealVec{p} \leq \SupPmaxs, \quad
+        \SupQmins \leq \RealVec{q} \leq \SupQmaxs,
+        \\
+        \operatorname{with} \quad &
+        p_{\mathsf{need}} = \Clip{%
+            \OnesVec^{\!\mathsf{T}} \DemPs + p_{\mathsf{h}} + p_{\mathsf{o}}%
+        }{\OnesVec^{\!\mathsf{T}} \SupPmins}{\OnesVec^{\!\mathsf{T}} \SupPmaxs},
+        \quad
+        q_{\mathsf{need}} = \Clip{%
+            \OnesVec^{\!\mathsf{T}} \DemQs + q_{\mathsf{h}} + q_{\mathsf{o}}%
+        }{\OnesVec^{\!\mathsf{T}} \SupQmins}{\OnesVec^{\!\mathsf{T}} \SupQmaxs},
+        \\
+        \quad &
+        p_{\mathsf{h}} + \ImagUnit q_{\mathsf{h}} = \XEDShun{\SnapBusMs,\SnapBusAs;\Ybus},
+        \quad \operatorname{and} \quad
+        p_{\mathsf{o}} + \ImagUnit q_{\mathsf{o}} = \XEDLoss{\SnapBusMs,\SnapBusAs;\Ybus}.
+    \end{align*}
+    \end{block}
+
+    \begin{itemize}
+        \item <1-> Vanilla ED but considers reactive powers
+        \begin{itemize}
+            \item <1-> \textcolor<1>{CornellRed}{Supply regularization
+                \(\XEDReg{p},\XEDReg{q} \geq 0\)}
+            \item <1-> \textcolor<2>{CornellRed}{Adjust for non-demand consumption}:
+                \(\XEDShun{\cdot}\) (\S 3.2.1) and \(\XEDLoss{\cdot}\) (\S 3.2.2)
+        \end{itemize}
+
+        \item <3> \textcolor<3>{CornellRed}{Convex}:
+            checked with CVX 2.2 \cite{CVX_v2.2}, has a convex QP form (\S 3.2.3)
+        \begin{itemize}
+            \item[\ding{43}] <3> Lots of well-established polynomial-time algorithms
+        \end{itemize}
+    \end{itemize}
+\end{frame}

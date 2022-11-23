@@ -1,0 +1,39 @@
+\subsection{Solving for the anticipated bus voltages}
+
+\begin{frame}[t]{Solving for the anticipated bus voltages}{}
+    \begin{block}{APF equations (\APFE)}
+    \vspace{-1em}
+    \begin{IEEEeqnarray*}{rCcCl}
+        \Resids\paren{\PFEVars;\Ybus,\DemDrws,\SupInjs,\BusA{\PFERefBus}}
+        &\coloneqq&
+        \underbrace{
+            \NetInjs \paren{\BusMs,\PFEBusAs;\Ybus,\BusA{\PFERefBus}}
+            \ - \
+            \PFESlack \begin{bmatrix*}\SupCon\PFESDist \\ \ZerosVec[\NumBuses]\end{bmatrix*}
+        }_{\PFEResids\paren{\PFEVars;\,\Ybus,\,\BusA{\PFERefBus}}}
+        -
+        \begin{bmatrix*}\SupCon\SupPs \\ \SupCon\SupQs\end{bmatrix*}
+        -
+        \begin{bmatrix*}\DemCon\DemPs \\ \DemCon\DemQs\end{bmatrix*}
+        &=&
+        \ZerosVec[2\NumBuses]
+    \end{IEEEeqnarray*}
+    \end{block}
+
+    \begin{itemize}
+        \item <1-> A \textcolor<1>{CornellRed}{\(2\NumBuses\)--dimensional root-finding} task
+        \begin{itemize}
+            \item[\ding{43}] <1-> Lots of derivative-based algorithms with fast convergence guarantees
+            \item <1-> See \S 3.3.2 for the \textcolor<1>{CornellRed}{APF Jacobian
+                \(\APFJac\paren{\PFEVars} \,\coloneqq
+                \partial_{\PFEVars}\PFEResids\paren{\PFEVars}\)}
+            % \item <1-> See \S 3.3.3 for an initialization strategy
+        \end{itemize}
+
+        \item <2> \textcolor<2>{CornellRed}{\(\SupInjs\) is a parameter of \APFE}
+        \begin{itemize}
+            \item[\ding{43}] <2> Different \(\SupInjs\)'s give different \(\PFEVars\)'s
+            \item[\ding{43}] <2> Compare APF points by their \(\PFESlack\)'s
+        \end{itemize}
+    \end{itemize}
+\end{frame}
