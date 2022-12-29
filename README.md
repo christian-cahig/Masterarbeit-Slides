@@ -2,7 +2,7 @@
 
 This repository houses the LaTeX source code for the presentation slides
 used during the final defense of my master's thesis
-([*A Computational Approach to Anticipating Supply Injections and Bus Voltages in Steady-State Power Systems Analysis*](https://doi.org/10.5281/zenodo.7180586)).
+([*A Computational Approach to Anticipating Supply Injections and Bus Voltages in Steady-State Power Systems Analysis*](https://doi.org/10.5281/zenodo.7491508)).
 
 ## Organization
 
@@ -23,7 +23,7 @@ Please use whichever is/are most appropriate:
   date        = {2022},
   institution = {Mindanao State University - Iligan Institute of Technology},
   title       = {A Computational Approach to Anticipating Supply Injections and Bus Voltages in Steady-State Power Systems Analysis},
-  doi         = {10.5281/zenodo.7180586},
+  doi         = {10.5281/zenodo.7491508},
   address     = {Iligan, Philippines},
 }
 ```
